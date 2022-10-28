@@ -2,7 +2,11 @@ package br.com.hugo.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+import javax.persistence.Entity;
+
+@EntityScan(basePackages = "br.com.hugo.api.domain")
 @SpringBootApplication
 public class ApiApplication {
 

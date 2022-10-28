@@ -12,11 +12,11 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity(name = "tb_users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer  id;
+    private Integer id;
     private String name;
     @Column(unique = true)
     private String email;
