@@ -4,6 +4,7 @@ import br.com.hugo.api.domain.User;
 import br.com.hugo.api.domain.dto.UserDTO;
 import br.com.hugo.api.repositories.UserRepository;
 import br.com.hugo.api.services.UserService;
+import br.com.hugo.api.services.exceptions.DataIntegratyViolationException;
 import br.com.hugo.api.services.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserDTO obj) {
+        findByEmail(obj);
         return repository.save(mapper.map(obj,User.class));
+    }
+
+    private void findByEmail(UserDTO obj){
+        Optional<User> user = repository.findByEmail(obj.getEmail());
+        if (user.isPresent()){
+            throw new DataIntegratyViolationException("Email ja registrado na base");
+        }
+
     }
 }
