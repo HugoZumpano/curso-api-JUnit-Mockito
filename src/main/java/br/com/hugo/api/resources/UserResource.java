@@ -45,5 +45,13 @@ public class UserResource {
 
 
     }
+    @PutMapping (value = "/{id}") // deixei o newObj criado para fins didatico , mas poderia jogar direto dentro do mapper
+    public ResponseEntity<UserDTO> update(@PathVariable Integer id, @RequestBody UserDTO obj){
+        obj.setId(id);
+        User newObj = service.update(obj);
+        return ResponseEntity.ok().body(mapper.map(newObj, UserDTO.class));
+
+
+    }
 
 }
