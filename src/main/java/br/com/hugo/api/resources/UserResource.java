@@ -53,5 +53,13 @@ public class UserResource {
 
 
     }
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<UserDTO> delete(@PathVariable Integer id){
+        service.delete(id);
+        return ResponseEntity.noContent().build();
 
+
+
+
+    }
 }
