@@ -66,7 +66,7 @@ class UserResourceTest {
     }
 
     @Test
-    void WhenFindAllThenReturnAListOfUserDTO() {
+    void whenFindAllThenReturnAListOfUserDTO() {
         when(service.findAll()).thenReturn(List.of(user));
         when(mapper.map(any(), any())).thenReturn(userDTO);
         ResponseEntity<List<UserDTO>> response = resource.findAll();
@@ -87,7 +87,7 @@ class UserResourceTest {
     }
 
     @Test
-    void WhenCreateThenReturnCreated() {
+    void whenCreateThenReturnCreated() {
         when(service.create(any())).thenReturn(user);
 
         ResponseEntity<UserDTO> response = resource.create(userDTO);
@@ -99,7 +99,7 @@ class UserResourceTest {
     }
 
     @Test
-    void WhenUpdateThenReturnSuccess() {
+    void whenUpdateThenReturnSuccess() {
         when(service.update(userDTO)).thenReturn(user);
         when(mapper.map(any(), any())).thenReturn(userDTO);
 
@@ -119,7 +119,7 @@ class UserResourceTest {
     }
 
     @Test
-    void WhenDeleteThenReturnSuccess() {
+    void whenDeleteThenReturnSuccess() {
         doNothing().when(service).delete(anyInt());
 
         ResponseEntity<UserDTO> response = resource.delete(1);
