@@ -1,5 +1,6 @@
 package br.com.hugo.api.resources.exceptions;
 
+import br.com.hugo.api.services.exceptions.DataIntegratyViolationException;
 import br.com.hugo.api.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequestWrapper;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,7 +47,21 @@ class ResourceExceptionHandlerTest {
     }
 
     @Test
-    void dataIntegratyViolationException() {
+    void dataIntegrityViolationException() {
+        ResponseEntity<StandardError> response = exceptionHandler.DataIntegrityViolationException(
+                new DataIntegratyViolationException("Email ja registrado na base"),
+                new MockHttpServletRequest());
+
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(StandardError.class, response.getBody().getClass());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals("Email ja registrado na base", response.getBody().getError());
+        assertEquals(400,response.getBody().getStatus());
+        assertNotEquals("/user/2" ,response.getBody().getPath());
+        assertNotEquals(LocalDateTime.now(), response.getBody().getTimestamp());
 
 
     }

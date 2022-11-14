@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = repository.findByEmail(obj.getEmail());
         if (user.isPresent() && !user.get().getId().equals(obj.getId()) ){
             throw new DataIntegratyViolationException("Email ja registrado na base");
+
         }
 
     }

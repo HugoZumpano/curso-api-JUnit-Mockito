@@ -4,6 +4,7 @@ package br.com.hugo.api.services.impl;
 import br.com.hugo.api.domain.User;
 import br.com.hugo.api.domain.dto.UserDTO;
 import br.com.hugo.api.repositories.UserRepository;
+import br.com.hugo.api.services.exceptions.DataIntegratyViolationException;
 import br.com.hugo.api.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,17 +15,14 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 import java.util.Optional;
 
 
-import static javax.swing.Action.NAME;
 import static javax.swing.text.html.parser.DTDConstants.ID;
 
-import static org.h2.engine.DbObject.INDEX;
-import static org.junit.jupiter.api.Assertions.*;
+
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -32,7 +30,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 
 
 @SpringBootTest
@@ -49,7 +46,7 @@ class UserServiceImplTest {
     @Mock
     private ModelMapper mapper;
 
-   private User user;
+    private User user;
     private UserDTO userDTO;
     private Optional<User> optionalUser;
 
@@ -66,23 +63,24 @@ class UserServiceImplTest {
 
         Assertions.assertNotNull(response);
         assertEquals(User.class, response.getClass());
-        assertEquals(1,response.getId());
-        assertEquals("hugo",response.getName());
-        assertEquals("email@hotmail",response.getEmail());
+        assertEquals(1, response.getId());
+        assertEquals("hugo", response.getName());
+        assertEquals("email@hotmail", response.getEmail());
     }
 
     @Test
     void whenFindByIdThenReturnAnObjectNotFoundException() {
         when(repository.findById(anyInt())).thenThrow(new ObjectNotFoundException("Objeto não encontrado."));
 
-        try{
+        try {
             service.findById(ID);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             assertEquals(ObjectNotFoundException.class, ex.getClass());
             assertEquals("Objeto não encontrado.", ex.getMessage());
         }
 
     }
+
     @Test
     void whenFindAllThenReturnAnListOfUsers() {
         when(repository.findAll()).thenReturn(List.of(user));
@@ -101,15 +99,15 @@ class UserServiceImplTest {
 
     @Test
     void whenCreateThenReturnSuccess() {
-       when(repository.save(any())).thenReturn(user);
+        when(repository.save(any())).thenReturn(user);
         User response = service.create(userDTO);
 
         Assertions.assertNotNull(response);
         assertEquals(User.class, response.getClass());
-        assertEquals(1,response.getId());
-        assertEquals("hugo",response.getName());
-        assertEquals("email@hotmail",response.getEmail());
-        assertEquals("123",response.getPassword());
+        assertEquals(1, response.getId());
+        assertEquals("hugo", response.getName());
+        assertEquals("email@hotmail", response.getEmail());
+        assertEquals("123", response.getPassword());
     }
 
     @Test
@@ -117,14 +115,15 @@ class UserServiceImplTest {
         when(repository.findByEmail(anyString())).thenReturn(optionalUser);
         User response = service.create(userDTO);
 
-        try{
+        try {
             optionalUser.get().setId(1);
             service.create(userDTO);
         } catch (Exception ex){
-            assertEquals(DataIntegrityViolationException.class, ex.getClass());
-            assertEquals("E-mail já cadastrado no sistema.",ex.getMessage());
+            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals("Email ja registrado na base",ex.getMessage());
         }
     }
+
     @Test
     void whenUpdateThenReturnSuccess() {
 
@@ -133,22 +132,24 @@ class UserServiceImplTest {
 
         Assertions.assertNotNull(response);
         assertEquals(User.class, response.getClass());
-        assertEquals(1,response.getId());
-        assertEquals("hugo",response.getName());
-        assertEquals("email@hotmail",response.getEmail());
-        assertEquals("123",response.getPassword());
+        assertEquals(1, response.getId());
+        assertEquals("hugo", response.getName());
+        assertEquals("email@hotmail", response.getEmail());
+        assertEquals("123", response.getPassword());
     }
+
     @Test
     void whenUpdateThenReturnAnDataIntegrityViolationException() {
         when(repository.findByEmail(anyString())).thenReturn(optionalUser);
         User response = service.create(userDTO);
 
-        try{
+        try {
             optionalUser.get().setId(1);
             service.create(userDTO);
-        } catch (Exception ex){
-            assertEquals(DataIntegrityViolationException.class, ex.getClass());
-            assertEquals("E-mail já cadastrado no sistema.",ex.getMessage());
+
+        } catch (Exception ex) {
+            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals("Email ja registrado na base", ex.getMessage());
         }
     }
 
@@ -175,10 +176,10 @@ class UserServiceImplTest {
         }
     }
 
-    private void startUser(){
+    private void startUser() {
         user = new User(1, "hugo", "email@hotmail", "123");
         userDTO = new UserDTO(1, "hugo", "email@hotmail", "123");
-        optionalUser = Optional.of(new User(1,"hugo","email@hotmail","123"));
+        optionalUser = Optional.of(new User(1, "hugo", "email@hotmail", "123"));
     }
 }
 

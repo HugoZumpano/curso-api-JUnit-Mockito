@@ -1,6 +1,5 @@
 package br.com.hugo.api.resources;
 
-import br.com.hugo.api.config.ModelMappperConfig;
 import br.com.hugo.api.domain.User;
 import br.com.hugo.api.domain.dto.UserDTO;
 import br.com.hugo.api.services.impl.UserServiceImpl;
@@ -12,11 +11,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
+
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
